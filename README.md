@@ -4,22 +4,21 @@ Smart docker image with nginx preconfigued to terminate SSL or to proxy requests
 
 ```
 
-
-https, port 443         + ----------------------------+
------------------------>|                             |
-                        |     nginx-proxy-helper      |                        +-------------|
------------------------>|                             |    http://localhost:80 |             |
-https, port 444         |                             |----------------------->| application |
-(verify client's cert)  |                             |                        |             |
-                        |                             |                        +-------------+
------------------------>|   /certs/ca,server,client   |
-http, port 8080         +-----------------------------|
-proxy                              |
-                                   | http 9000
-                                   v download certs
+    https, port 443         + ----------------------------+
+    ----------------------->|                             |
+                            |     nginx-proxy-helper      |                        +-------------|
+    ----------------------->|                             |    http://localhost:80 |             |
+    https, port 444         |                             |----------------------->| application |
+    (verify client's cert)  |                             |                        |             |
+                            |                             |                        +-------------+
+    ----------------------->|   /certs/ca,server,client   |
+    http, port 8080         +-----------------------------|
+    proxy                                  |
+                                           | http 9000
+                                           v download certs
 ```
 
-# Usage
+## Usage
 
 The image doesn't contain keys or certificates. You have to provide them or generate on the first usage:
 
@@ -68,10 +67,17 @@ $ docker run --network=host --volume /tmp/certs:/certs -it nginx-proxy-helper:la
 and play:
 
 ```
-curl ...
+# use https endpoint with generated ca
+$ curl --cacert /tmp/certs/ca.crt https://localhost -vs > /dev/null
+
+# use https endpoint with client cers (client.key has 0600 permission)
+$ curl --cacert /tmp/certs/ca.crt --cert /tmp/certs/client.crt --key /tmp/certs/client.key -v https://localhost:444
+
+# use proxy
+$ http_proxy=http://localhost:8080 curl -v http://localhost
 ```
 
-# Tips
+## Tips
 
 If you don't have any application on localhost:80, you can use an image with Nginx (it servers the welcome page).
 
