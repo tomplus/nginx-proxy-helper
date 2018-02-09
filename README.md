@@ -25,7 +25,7 @@ The image doesn't contain keys or certificates. You have to provide them or gene
 ```
 $ mkdir /tmp/certs
 
-$ docker run --volume /tmp/certs:/certs -it nginx-proxy-helper:latest gen-certs.sh
+$ docker run --volume /tmp/certs:/certs -it tpimages/nginx-proxy-helper:latest gen-certs.sh
 ...
 [1/3] Generate CA (key & crt) ...
 Generating RSA private key, 4096 bit long modulus
@@ -62,7 +62,7 @@ ca.crt  ca.key  client.crt  client.csr  client.key  server.crt  server.csr  serv
 Now, you can start the nginx-proxy-helper:
 
 ```
-$ docker run --network=host --volume /tmp/certs:/certs -it nginx-proxy-helper:latest
+$ docker run --network=host --volume /tmp/certs:/certs -it tpimages/nginx-proxy-helper:latest
 ```
 and play:
 
@@ -88,7 +88,7 @@ $ docker run --network=host nginx:latest
 In some CI/CD pipelines can be useful to create certs on ephemeral storage. You can do it in this way:
 
 ```
-docker run --network=host -it nginx-proxy-helper:latest /bin/bash -c "gen-certs.sh; nginx"
+docker run --network=host -it tpimages/nginx-proxy-helper:latest /bin/bash -c "gen-certs.sh; nginx"
 ```
 
 and you can download keys from http://localhost:9000/.
