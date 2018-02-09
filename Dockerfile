@@ -9,3 +9,5 @@ COPY gen-certs.sh /usr/local/bin/
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443 444 8080 9000
+
+CMD "nginx"
