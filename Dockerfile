@@ -8,4 +8,4 @@ RUN apt-get update \
 COPY gen-certs.sh /usr/local/bin/
 COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80 8080 443 8443
+EXPOSE 443 444 8080 9000
